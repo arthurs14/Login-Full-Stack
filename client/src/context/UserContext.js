@@ -1,9 +1,18 @@
-import { useState, createContext } from 'react';
+import { createContext, useReducer } from 'react';
+import userReducer from './userReducer';
 
 const UserContext = createContext();
 
 const UserContextProvider = (props) => {
-  const [user, setUser] = useState();
+  const initialState = {
+    id: '',
+    email: '',
+    name: '',
+    password: '',
+    transactions: [],
+  };
+
+  const [state, dispatch] = useReducer(userReducer, initialState);
 
   const login = () => {};
 
@@ -12,7 +21,7 @@ const UserContextProvider = (props) => {
   const logout = () => {};
   
   const value = {
-    user,
+    user: state,
     login,
     signup,
     logout,
