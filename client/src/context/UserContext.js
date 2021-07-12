@@ -1,11 +1,12 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
+import { AUTH } from './userActions';
 import userReducer from './userReducer';
 
 const UserContext = createContext();
+export const useUser = () => useContext(UserContext);
 
 const UserContextProvider = (props) => {
   const initialState = {
-    id: '',
     email: '',
     name: '',
     password: '',
@@ -14,9 +15,19 @@ const UserContextProvider = (props) => {
 
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  const login = () => {};
+  const login = (formData) => {
+    dispatch({
+      type: AUTH,
+      formData,
+    });
+  };
 
-  const signup = () => {};
+  const signup = (formData) => {
+    dispatch({
+      type: AUTH,
+      formData
+    });
+  };
 
   const logout = () => {};
   

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Container, Grid, Paper, Typography, Avatar, Button } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
+
 import Input from './Input';
 import useStyles from './styles';
+import { useUser } from '../../context/UserContext';
 
 const initialState = {
   firstName: '',
@@ -17,6 +19,7 @@ const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const { login, signup } = useUser();
   const classes = useStyles();
 
   const handleShowPassword = () => {
@@ -30,7 +33,13 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // do stuff with form data
-    console.log(formData);
+    if (isSignup) {
+      login(formData);
+      setFormData(initialState);
+    } else {
+      signup(formData);
+      setFormData(initialState);
+    }
   };
 
   const switchMode = () => {

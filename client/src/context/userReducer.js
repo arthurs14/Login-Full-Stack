@@ -1,10 +1,8 @@
-import { LOGIN, SIGNUP, LOGOUT } from './userActions'; 
+import { AUTH, LOGOUT } from './userActions'; 
 
 const userReducer = (state, action) => {
   switch(action.type) {
-    case LOGIN:
-      return {};
-    case SIGNUP:
+    case AUTH:
       return {};
     case LOGOUT:
       return {};
