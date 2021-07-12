@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Grid, Paper, Typography, Avatar, Button } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
+import { useHistory } from 'react-router-dom';
 
 import Input from './Input';
 import useStyles from './styles';
@@ -21,6 +21,7 @@ const Login = () => {
   const [formData, setFormData] = useState(initialState);
   const { login, signup } = useUser();
   const classes = useStyles();
+  const history = useHistory();
 
   const handleShowPassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
@@ -34,10 +35,10 @@ const Login = () => {
     e.preventDefault();
     // do stuff with form data
     if (isSignup) {
-      login(formData);
+      login(formData, history);
       setFormData(initialState);
     } else {
-      signup(formData);
+      signup(formData, history);
       setFormData(initialState);
     }
   };

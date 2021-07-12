@@ -1,32 +1,44 @@
 import { createContext, useContext, useReducer } from 'react';
 import { AUTH } from './userActions';
 import userReducer from './userReducer';
+import * as api from '../api';
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 const UserContextProvider = (props) => {
   const initialState = {
-    email: '',
-    name: '',
-    password: '',
-    transactions: [],
+    authData: null,
   };
 
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  const login = (formData) => {
-    dispatch({
-      type: AUTH,
-      formData,
-    });
+  const login = async (formData, history) => {
+    try {
+      // login the user via backend
+      const { data } = await api.signIn(formData)
+      
+      // update state
+      dispatch({ type: AUTH, data });
+
+      history.push('/home');
+    } catch(e) {
+      console.log(e);
+    }
   };
 
-  const signup = (formData) => {
-    dispatch({
-      type: AUTH,
-      formData
-    });
+  const signup = async (formData, history) => {
+    try {
+      // sign up and login via backend
+      const { data } = await api.signUp(formData);
+
+      // update state
+      dispatch({ type: AUTH, data });
+
+      history.push('/home');
+    } catch (e) {
+      console.log(e);
+    }  
   };
 
   const logout = () => {};
