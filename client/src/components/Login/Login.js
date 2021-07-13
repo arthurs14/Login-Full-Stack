@@ -35,10 +35,10 @@ const Login = () => {
     e.preventDefault();
     // do stuff with form data
     if (isSignup) {
-      login(formData, history);
+      signup(formData, history);
       setFormData(initialState);
     } else {
-      signup(formData, history);
+      login(formData, history);
       setFormData(initialState);
     }
   };

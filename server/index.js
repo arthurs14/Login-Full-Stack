@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+import userRoutes from './routes/users.js';
+
 const app = express();
 dotenv.config();
 
@@ -11,9 +13,9 @@ dotenv.config();
  app.use(cors());
 
  // start routes
-app.use('/user', userRouters);
+app.use('/user', userRoutes);
 
-const PORT = provess.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.CONNECTION_URL,
   { useNewUrlParser: true, useUnifiedTopology: true })
