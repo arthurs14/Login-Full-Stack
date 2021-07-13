@@ -1,7 +1,8 @@
-import { createContext, useContext, useReducer } from 'react';
-import { AUTH } from './userActions';
+import { createContext, useContext, useReducer, useEffect, useState } from 'react';
+import { AUTH, LOGOUT } from './userActions';
 import userReducer from './userReducer';
 import * as api from '../api';
+import decode from 'jwt-decode';
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -11,7 +12,24 @@ const UserContextProvider = (props) => {
     authData: null,
   };
 
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [state, dispatch] = useReducer(userReducer, initialState);
+
+  console.log(user);
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logout();
+      }
+    }
+
+    setUser(JSON.parse(localStorage.getItem('profile')));
+  }, [user?.token]);
 
   const login = async (formData, history) => {
     try {
@@ -41,7 +59,14 @@ const UserContextProvider = (props) => {
     }  
   };
 
-  const logout = () => {};
+  const logout = (history) => {
+    try {
+      dispatch({ type: LOGOUT })
+      history.push('/');
+    } catch (e) {
+      console.log(e);
+    }
+  };
   
   const value = {
     user: state,
@@ -49,6 +74,8 @@ const UserContextProvider = (props) => {
     signup,
     logout,
   };
+
+  //console.log(user);
 
   return (
     <UserContext.Provider value={value}>
